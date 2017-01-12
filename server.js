@@ -1,5 +1,6 @@
 
 var express = require('express');
+var path = require('path');
 var bodyParser = require('body-parser')
 
 var apiRoutes = require('./api-routes');
@@ -11,10 +12,12 @@ app.use(apiRoutes);
 
 // serve homepage
 app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/client/index.html');
+	res.sendFile(path.join(__dirname + '/client/index.html'));
 });
 
 // serve 404 route
 app.get('*', (req, res) => res.send('Page not found T_T'));
 
-app.listen(process.env.port || 7000, () => console.log('Express listening on port 7000'));
+var port = process.env.port || 7000;
+
+app.listen(port, () => console.log(`Express listening on port ${port}`));
