@@ -17,4 +17,4 @@ app.get('/', (req, res) => {
 // serve 404 route
 app.get('*', (req, res) => res.send('Page not found T_T'));
 
-app.listen(process.env.PORT || 7000, () => console.log('Express listening on port 7000'));
+app.listen(process.env.port || 7000, () => console.log('Express listening on port 7000'));
