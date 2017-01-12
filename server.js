@@ -2,50 +2,12 @@
 var express = require('express');
 var bodyParser = require('body-parser')
 
-var orders = require('./api/orders.js');
-
-var printPrices = require('./api/methods').printPrices;
-var allocateFunds = require('./api/methods').allocateFunds;
+var apiRoutes = require('./api-routes');
 
 let app = express();
-
-// app.use(bodyParser.urlencoded({
-//     extended: true
-// }));
 app.use(bodyParser.json());
 
-// demo routes which preload json data
-// demo order prices:
-app.get('/api/get-prices', (req, res) => {
-	res.json(printPrices(orders));
-});
-// demo fund distributions:
-app.get('/api/get-funds', (req, res) => {
-	res.json(allocateFunds(orders));
-});
-
-// actual api-routes, must post order data
-// post for prices:
-app.post('/api/post-prices/', (req, res) => {
-	try {
-		var result = printPrices(req.body);
-		res.json(result);
-	} catch(err) {
-		console.log('Post data to prices API failed.');
-		res.status(500).send();
-	};
-});
-
-// post for fund distributions:
-app.post('/api/post-funds', (req, res) => {
-	try {
-		var result = allocateFunds(req.body);
-		res.json(result);
-	} catch(err) {
-		console.log('Post data to funds API failed.');
-		res.status(500).send();
-	};
-});
+app.use(apiRoutes);
 
 // serve homepage
 app.get('/', (req, res) => {
