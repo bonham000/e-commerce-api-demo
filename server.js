@@ -1,5 +1,6 @@
 
 var express = require('express');
+var bodyParser = require('body-parser')
 
 var orders = require('./api/orders.js');
 
@@ -7,6 +8,11 @@ var printPrices = require('./api/methods').printPrices;
 var allocateFunds = require('./api/methods').allocateFunds;
 
 let app = express();
+
+// app.use(bodyParser.urlencoded({
+//     extended: true
+// }));
+app.use(bodyParser.json());
 
 // demo routes which preload json data
 // demo order prices:
@@ -20,13 +26,13 @@ app.get('/api/get-funds', (req, res) => {
 
 // actual api-routes, must post order data
 // post for prices:
-app.post('/api/post-prices', (req, res) => {
+app.post('/api/post-prices/', (req, res) => {
 	res.json(printPrices(req.body));
 });
 
 // post for fund distributions:
 app.post('/api/post-funds', (req, res) => {
-	res.json(allocateFunds(req.body));
+	res.send({ data: allocateFunds(req.body) });
 });
 
 // serve homepage

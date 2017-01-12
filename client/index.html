@@ -2,11 +2,112 @@
 <html>
 	<head>
 		<title>E-Commerce API Demo</title>
+		<style>
+			body {
+				padding: 3px 18px;
+			}
+			textarea {
+				min-width: 300px;
+				min-height: 800px;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>E-Commerce API Demo</h1>
 		<p>Click either link for a quick demonstration of the API. These links will process saved order data and return the result.</p>
-		<a href="/api/get-prices">Get Price Data for Orders</a>
+		<a href="/api/get-prices">Get Price Data for Orders</a><br>
 		<a href="/api/get-funds">Get Fund Distribution Data for Orders</a>
+		<p>You can also make a post request to the routes <code>'/api/post-prices'</code> or <code>'/api/post-funds'</code> and specify the order data directly. This is an example of what the order data would need to look like:</p>
+		<button onclick="callPrices()">Submit for Prices</button>
+    <button>Submit for Funds</button><br><br>
+    <textarea id='input'>
+[
+  {
+    "order_date": "1/11/2015",
+    "order_number": "20150111000001",
+    "order_items": [
+      {
+        "order_item_id": 1,
+        "type": "Real Property Recording",
+        "pages": 3
+      },
+      {
+        "order_item_id": 2,
+        "type": "Real Property Recording",
+        "pages": 1
+      }
+    ]
+  },
+  {
+    "order_date": "1/17/2015",
+    "order_number": "20150117000001",
+    "order_items": [
+      {
+        "order_item_id": 3,
+        "type": "Real Property Recording",
+        "pages": 2
+      },
+      {
+        "order_item_id": 4,
+        "type": "Real Property Recording",
+        "pages": 20
+      }
+    ]
+  },
+  {
+    "order_date": "1/18/2015",
+    "order_number": "20150118000001",
+    "order_items": [
+      {
+        "order_item_id": 5,
+        "type": "Real Property Recording",
+        "pages": 5
+      },
+      {
+        "order_item_id": 6,
+        "type": "Birth Certificate",
+        "pages": 1
+      }
+    ]
+  },
+  {
+    "order_date": "1/23/2015",
+    "order_number": "20150123000001",
+    "order_items": [
+      {
+        "order_item_id": 7,
+        "type": "Birth Certificate",
+        "pages": 1
+      },
+      {
+        "order_item_id": 8,
+        "type": "Birth Certificate",
+        "pages": 1
+      }
+    ]
+  }
+]
+		</textarea>
+    <script>
+      
+      function callPrices() {
+        var order = eval(document.getElementById('input').value);
+        fetch('/api/post-prices/', {
+          method: 'post',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(order)
+        }).then(function(response) {
+          response.json().then(function(data) {
+            console.log(data);
+            document.body.innerHTML = '<pre>' + JSON.stringify(data, null, 4) + '</pre>'
+          })
+        });
+      }
+
+    </script>
 	</body>
 </html>
+
